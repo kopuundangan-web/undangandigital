@@ -1,0 +1,2428 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Ko Pu Undangan | Undangan Pernikahan Digital</title>
+
+    <!-- Bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;1,500&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ==============================
+       ROOT
+    ============================== */
+
+      :root {
+        --color-bg: #f9f5ef;
+        --color-bg-soft: #fffaf7;
+
+        --color-white: #ffffff;
+
+        --color-primary: #7d3e42;
+        --color-primary-dark: #5f2e32;
+
+        --color-sage: #a8ad91;
+        --color-sage-light: #dde0d1;
+
+        --color-gold: #b9a46d;
+        --color-gold-light: #e6dcc2;
+
+        --color-text: #362c2d;
+        --color-muted: #7e7373;
+
+        --border-color: rgba(125, 62, 66, 0.13);
+
+        --font-body: "DM Sans", sans-serif;
+        --font-serif: "Playfair Display", serif;
+
+        --radius-sm: 14px;
+        --radius-md: 24px;
+        --radius-lg: 38px;
+      }
+
+      /* Jika nanti font Ko Pu sudah ada */
+
+      /*
+    @font-face {
+      font-family: "KoPu";
+      src: url("./assets/fonts/KoPuScript-Regular.ttf")
+        format("truetype");
+    }
+    */
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+
+        font-family: var(--font-body);
+
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(221, 224, 209, 0.6),
+            transparent 35%
+          ),
+          var(--color-bg);
+
+        color: var(--color-text);
+
+        overflow-x: hidden;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      section {
+        position: relative;
+      }
+
+      /* ==============================
+       NAVBAR
+    ============================== */
+      /* ==============================
+   NAVBAR
+============================== */
+
+      .navbar {
+        padding: 16px 0;
+
+        background: transparent;
+
+        transition:
+          background 0.35s ease,
+          padding 0.35s ease,
+          box-shadow 0.35s ease,
+          backdrop-filter 0.35s ease;
+
+        z-index: 1000;
+      }
+
+      /* ==============================
+   NAVBAR SAAT SCROLL
+============================== */
+
+      .navbar.scrolled {
+        padding: 9px 0;
+
+        background: rgba(249, 245, 239, 0.92);
+
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+
+        border-bottom: 1px solid rgba(125, 62, 66, 0.08);
+
+        box-shadow: 0 8px 35px rgba(68, 45, 46, 0.05);
+      }
+
+      /* ==============================
+   BRAND / LOGO
+============================== */
+
+      .navbar-brand {
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+        align-items: center;
+      }
+
+      /*
+Logo Anda saat ini masih mempunyai
+background putih.
+
+mix-blend-mode: multiply membantu
+background putih menyatu dengan navbar.
+*/
+
+      .navbar-logo {
+        display: block;
+
+        width: 145px;
+        height: auto;
+
+        object-fit: contain;
+
+        mix-blend-mode: multiply;
+
+        transition:
+          width 0.35s ease,
+          transform 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      .navbar-brand:hover .navbar-logo {
+        transform: scale(1.025);
+      }
+
+      /* Logo sedikit mengecil ketika scroll */
+
+      .navbar.scrolled .navbar-logo {
+        width: 125px;
+      }
+
+      /* ==============================
+   NAVIGATION
+============================== */
+
+      .navbar-nav {
+        gap: 5px;
+      }
+
+      .nav-link {
+        position: relative;
+
+        padding: 9px 14px !important;
+
+        color: var(--color-text);
+
+        font-family: var(--font-body);
+
+        font-size: 0.84rem;
+        font-weight: 500;
+
+        letter-spacing: 0.015em;
+
+        transition: color 0.25s ease;
+      }
+
+      .nav-link:hover {
+        color: var(--color-primary);
+      }
+
+      /* GARIS KECIL */
+
+      .nav-link::after {
+        content: "";
+
+        position: absolute;
+
+        left: 14px;
+        right: 14px;
+        bottom: 3px;
+
+        height: 1px;
+
+        background: var(--color-primary);
+
+        transform: scaleX(0);
+
+        transform-origin: center;
+
+        transition: transform 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        transform: scaleX(1);
+      }
+
+      /* ==============================
+   BUTTON NAVBAR
+============================== */
+
+      .btn-nav {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 11px 20px;
+
+        background: var(--color-primary);
+
+        border: 1px solid var(--color-primary);
+        border-radius: 100px;
+
+        color: #fff;
+
+        font-size: 0.8rem;
+        font-weight: 500;
+
+        white-space: nowrap;
+
+        transition:
+          transform 0.3s ease,
+          background 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      .btn-nav:hover {
+        transform: translateY(-2px);
+
+        background: var(--color-primary-dark);
+
+        border-color: var(--color-primary-dark);
+
+        color: white;
+
+        box-shadow: 0 10px 25px rgba(125, 62, 66, 0.2);
+      }
+
+      /* ==============================
+   HAMBURGER
+============================== */
+
+      .navbar-toggler {
+        padding: 5px;
+
+        border: none;
+
+        color: var(--color-primary);
+
+        box-shadow: none !important;
+      }
+
+      .navbar-toggler i {
+        font-size: 1.8rem;
+      }
+
+      /* ==============================
+   MOBILE
+============================== */
+
+      @media (max-width: 991.98px) {
+        .navbar {
+          padding: 12px 0;
+        }
+
+        .navbar-logo {
+          width: 120px;
+        }
+
+        .navbar.scrolled .navbar-logo {
+          width: 110px;
+        }
+
+        .navbar-collapse {
+          margin-top: 12px;
+
+          padding: 16px;
+
+          background: rgba(255, 250, 247, 0.97);
+
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+
+          border: 1px solid rgba(125, 62, 66, 0.1);
+
+          border-radius: 18px;
+
+          box-shadow: 0 20px 50px rgba(66, 41, 43, 0.08);
+        }
+
+        .navbar-nav {
+          align-items: stretch !important;
+
+          gap: 2px;
+        }
+
+        .nav-link {
+          padding: 11px 8px !important;
+        }
+
+        .nav-link::after {
+          display: none;
+        }
+
+        .btn-nav {
+          width: 100%;
+
+          margin-top: 4px;
+        }
+      }
+
+      /* ==============================
+   SMALL MOBILE
+============================== */
+
+      @media (max-width: 575.98px) {
+        .navbar-logo {
+          width: 105px;
+        }
+
+        .navbar.scrolled .navbar-logo {
+          width: 100px;
+        }
+      }
+      /* ==============================
+       BUTTON
+    ============================== */
+
+      .btn-kopu {
+        padding: 12px 24px;
+
+        border: 1px solid var(--color-primary);
+        border-radius: 100px;
+
+        background: var(--color-primary);
+
+        color: white;
+
+        font-size: 0.9rem;
+        font-weight: 500;
+
+        transition: all 0.3s ease;
+      }
+
+      .btn-kopu:hover {
+        transform: translateY(-2px);
+
+        background: var(--color-primary-dark);
+        border-color: var(--color-primary-dark);
+
+        color: white;
+
+        box-shadow: 0 12px 30px rgba(125, 62, 66, 0.2);
+      }
+
+      .btn-kopu-outline {
+        padding: 12px 24px;
+
+        border: 1px solid rgba(125, 62, 66, 0.25);
+        border-radius: 100px;
+
+        color: var(--color-primary);
+
+        background: rgba(255, 255, 255, 0.25);
+
+        transition: all 0.3s ease;
+      }
+
+      .btn-kopu-outline:hover {
+        background: white;
+
+        border-color: var(--color-primary);
+
+        color: var(--color-primary);
+      }
+
+      /* ==============================
+       HERO
+    ============================== */
+
+      .hero {
+        min-height: 100vh;
+
+        padding: 150px 0 90px;
+
+        display: flex;
+        align-items: center;
+
+        overflow: hidden;
+      }
+
+      .hero-decoration {
+        position: absolute;
+
+        border: 1px solid rgba(185, 164, 109, 0.3);
+
+        border-radius: 50%;
+
+        pointer-events: none;
+      }
+
+      .hero-circle-1 {
+        width: 420px;
+        height: 420px;
+
+        right: -230px;
+        top: 80px;
+      }
+
+      .hero-circle-2 {
+        width: 220px;
+        height: 220px;
+
+        left: -130px;
+        bottom: 80px;
+      }
+
+      .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+
+        gap: 10px;
+
+        margin-bottom: 24px;
+
+        color: var(--color-primary);
+
+        font-size: 0.76rem;
+        font-weight: 500;
+
+        text-transform: uppercase;
+
+        letter-spacing: 0.2em;
+      }
+
+      .hero-eyebrow::before {
+        content: "";
+
+        width: 38px;
+        height: 1px;
+
+        background: var(--color-gold);
+      }
+
+      .hero-title {
+        max-width: 700px;
+
+        margin-bottom: 24px;
+
+        font-family: var(--font-serif);
+
+        font-size: clamp(3.2rem, 7vw, 6.8rem);
+
+        line-height: 0.96;
+
+        letter-spacing: -0.04em;
+      }
+
+      .hero-title span {
+        color: var(--color-primary);
+
+        font-style: italic;
+      }
+
+      .hero-description {
+        max-width: 540px;
+
+        margin-bottom: 36px;
+
+        color: var(--color-muted);
+
+        font-size: 1rem;
+        line-height: 1.9;
+      }
+
+      /* ==============================
+       PHONE MOCKUP
+    ============================== */
+
+      .hero-visual {
+        position: relative;
+
+        min-height: 600px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .phone-wrapper {
+        position: relative;
+
+        z-index: 3;
+
+        width: 280px;
+
+        transform: rotate(4deg);
+      }
+
+      .phone {
+        position: relative;
+
+        padding: 9px;
+
+        background: #1c1919;
+
+        border-radius: 40px;
+
+        box-shadow: 0 40px 80px rgba(78, 44, 46, 0.18);
+      }
+
+      /* =================================
+   PHONE SCREEN
+================================= */
+
+      .phone-screen {
+        position: relative;
+
+        width: 100%;
+        height: 570px;
+
+        overflow: hidden;
+
+        border-radius: 33px;
+
+        background: #1c1919;
+      }
+
+      /* =================================
+   FULL SCREEN IMAGE
+================================= */
+
+      .phone-image {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: cover;
+        object-position: center;
+
+        z-index: 0;
+      }
+
+      /* =================================
+   GRADIENT
+================================= */
+
+      .phone-gradient {
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 1;
+
+        pointer-events: none;
+
+        background: linear-gradient(
+          to top,
+
+          rgba(29, 18, 19, 0.88) 0%,
+          rgba(29, 18, 19, 0.68) 18%,
+          rgba(29, 18, 19, 0.38) 38%,
+          rgba(29, 18, 19, 0.12) 58%,
+          rgba(29, 18, 19, 0) 75%
+        );
+      }
+
+      /* =================================
+   CONTENT
+================================= */
+
+      .phone-content {
+        position: absolute;
+
+        left: 0;
+        right: 0;
+        bottom: 38px;
+
+        z-index: 2;
+
+        padding: 0 24px;
+
+        text-align: center;
+
+        color: #fff;
+      }
+
+      .phone-small {
+        margin-bottom: 7px;
+
+        font-size: 0.62rem;
+        font-weight: 400;
+
+        letter-spacing: 0.23em;
+
+        text-transform: uppercase;
+
+        opacity: 0.9;
+      }
+
+      .phone-name {
+        margin: 0 0 7px;
+
+        font-family: var(--font-serif);
+
+        font-size: 2.35rem;
+        font-weight: 500;
+        font-style: italic;
+
+        line-height: 1;
+      }
+
+      .phone-date {
+        margin-bottom: 18px;
+
+        font-size: 0.7rem;
+
+        letter-spacing: 0.16em;
+
+        opacity: 0.9;
+      }
+
+      /* =================================
+   BUTTON
+================================= */
+
+      .phone-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 4px;
+
+        padding: 9px 18px;
+
+        border: 1px solid rgba(255, 255, 255, 0.65);
+        border-radius: 100px;
+
+        background: rgba(255, 255, 255, 0.13);
+
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+
+        color: #fff;
+
+        font-size: 0.68rem;
+        font-weight: 500;
+
+        transition: 0.3s ease;
+      }
+
+      .phone-button:hover {
+        background: #fff;
+
+        color: var(--color-primary);
+
+        border-color: #fff;
+      }
+
+      .phone-notch {
+        position: absolute;
+
+        width: 80px;
+        height: 23px;
+
+        left: 50%;
+        top: 14px;
+
+        transform: translateX(-50%);
+
+        border-radius: 100px;
+
+        background: #171515;
+
+        z-index: 4;
+      }
+
+      .phone-content {
+        position: absolute;
+
+        left: 0;
+        right: 0;
+        bottom: 45px;
+
+        padding: 20px;
+
+        text-align: center;
+
+        color: white;
+      }
+
+      .phone-btn {
+        margin-top: 15px;
+
+        padding: 8px 18px;
+
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 100px;
+
+        background: rgba(255, 255, 255, 0.15);
+
+        backdrop-filter: blur(8px);
+
+        color: white;
+
+        font-size: 0.7rem;
+      }
+
+      .phone-small {
+        margin-bottom: 7px;
+
+        font-size: 0.65rem;
+
+        letter-spacing: 0.25em;
+
+        text-transform: uppercase;
+      }
+
+      .phone-name {
+        margin-bottom: 8px;
+
+        font-family: var(--font-serif);
+
+        font-size: 2.3rem;
+        font-style: italic;
+      }
+
+      .phone-date {
+        font-size: 0.75rem;
+
+        letter-spacing: 0.13em;
+      }
+
+      /* FLOATING CARDS */
+
+      .floating-card {
+        position: absolute;
+
+        padding: 15px 18px;
+
+        background: rgba(255, 255, 255, 0.82);
+
+        backdrop-filter: blur(13px);
+
+        border: 1px solid rgba(255, 255, 255, 0.6);
+
+        border-radius: 18px;
+
+        box-shadow: 0 20px 50px rgba(78, 44, 46, 0.1);
+
+        z-index: 5;
+      }
+
+      .floating-card i {
+        color: var(--color-primary);
+      }
+
+      .floating-card-title {
+        margin: 0;
+
+        color: var(--color-text);
+
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .floating-card-text {
+        margin: 3px 0 0;
+
+        color: var(--color-muted);
+
+        font-size: 0.68rem;
+      }
+
+      .floating-one {
+        left: 0;
+        top: 125px;
+      }
+
+      .floating-two {
+        right: -10px;
+        bottom: 125px;
+      }
+
+      .visual-shape {
+        position: absolute;
+
+        width: 410px;
+        height: 410px;
+
+        background: var(--color-sage-light);
+
+        border-radius: 44% 56% 53% 47% / 54% 38% 62% 46%;
+
+        z-index: 1;
+      }
+
+      /* ==============================
+       MARQUEE / BRAND LINE
+    ============================== */
+
+      .brand-line {
+        padding: 26px 0;
+
+        border-top: 1px solid var(--border-color);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .brand-line-content {
+        display: flex;
+        justify-content: center;
+
+        gap: 35px;
+
+        flex-wrap: wrap;
+
+        color: var(--color-muted);
+
+        font-family: var(--font-serif);
+
+        font-size: 1rem;
+
+        font-style: italic;
+      }
+
+      .brand-line-content span::after {
+        content: "✦";
+
+        margin-left: 35px;
+
+        color: var(--color-gold);
+      }
+
+      .brand-line-content span:last-child::after {
+        display: none;
+      }
+
+      /* ==============================
+       SECTION GENERAL
+    ============================== */
+
+      .section-space {
+        padding: 120px 0;
+      }
+
+      .section-eyebrow {
+        margin-bottom: 14px;
+
+        color: var(--color-primary);
+
+        font-size: 0.72rem;
+        font-weight: 600;
+
+        letter-spacing: 0.2em;
+
+        text-transform: uppercase;
+      }
+
+      .section-title {
+        max-width: 620px;
+
+        margin-bottom: 20px;
+
+        font-family: var(--font-serif);
+
+        font-size: clamp(2.3rem, 5vw, 4rem);
+
+        line-height: 1.12;
+      }
+
+      .section-description {
+        max-width: 570px;
+
+        color: var(--color-muted);
+
+        line-height: 1.8;
+      }
+
+      /* ==============================
+       FEATURES
+    ============================== */
+
+      .feature-card {
+        height: 100%;
+
+        padding: 32px;
+
+        background: rgba(255, 255, 255, 0.42);
+
+        border: 1px solid var(--border-color);
+
+        border-radius: var(--radius-md);
+
+        transition: all 0.35s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-6px);
+
+        background: rgba(255, 255, 255, 0.8);
+
+        box-shadow: 0 25px 60px rgba(78, 44, 46, 0.08);
+      }
+
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+
+        display: grid;
+        place-items: center;
+
+        margin-bottom: 28px;
+
+        border: 1px solid var(--color-gold-light);
+        border-radius: 50%;
+
+        color: var(--color-primary);
+
+        font-size: 1.25rem;
+      }
+
+      .feature-title {
+        margin-bottom: 12px;
+
+        font-family: var(--font-serif);
+
+        font-size: 1.35rem;
+      }
+
+      .feature-description {
+        margin: 0;
+
+        color: var(--color-muted);
+
+        font-size: 0.88rem;
+        line-height: 1.8;
+      }
+
+      /* ==============================
+       CATALOG
+    ============================== */
+      /* =========================================
+   CATALOG
+========================================= */
+
+      .catalog-section {
+        background: var(--color-bg-soft);
+
+        border-radius: 60px 60px 0 0;
+      }
+
+      /* =========================================
+   CATALOG FILTER
+========================================= */
+
+      .catalog-filter {
+        display: flex;
+
+        align-items: center;
+
+        gap: 8px;
+
+        flex-wrap: wrap;
+      }
+
+      /* FILTER BUTTON */
+
+      .filter-btn {
+        padding: 10px 18px;
+
+        border: 1px solid var(--border-color);
+
+        border-radius: 100px;
+
+        background: transparent;
+
+        color: var(--color-muted);
+
+        font-family: var(--font-body);
+
+        font-size: 0.82rem;
+        font-weight: 500;
+
+        cursor: pointer;
+
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          border-color 0.3s ease,
+          transform 0.3s ease;
+      }
+
+      /* FILTER HOVER */
+
+      .filter-btn:hover {
+        transform: translateY(-1px);
+
+        background: rgba(125, 62, 66, 0.06);
+
+        border-color: rgba(125, 62, 66, 0.2);
+
+        color: var(--color-primary);
+      }
+
+      /* FILTER ACTIVE */
+
+      .filter-btn.active {
+        background: var(--color-primary);
+
+        border-color: var(--color-primary);
+
+        color: white;
+      }
+
+      /* =========================================
+   CATALOG CARD
+========================================= */
+
+      .catalog-card {
+        position: relative;
+
+        height: 100%;
+
+        overflow: hidden;
+
+        background: rgba(255, 255, 255, 0.9);
+
+        border: 1px solid rgba(125, 62, 66, 0.1);
+
+        border-radius: 30px;
+
+        box-shadow: 0 10px 35px rgba(67, 43, 44, 0.04);
+
+        transition:
+          transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.45s ease,
+          border-color 0.45s ease;
+      }
+
+      /* CARD HOVER */
+
+      .catalog-card:hover {
+        transform: translateY(-10px);
+
+        border-color: rgba(125, 62, 66, 0.16);
+
+        box-shadow:
+          0 30px 70px rgba(85, 50, 52, 0.11),
+          0 10px 30px rgba(85, 50, 52, 0.05);
+      }
+
+      /* =========================================
+   CATALOG IMAGE
+========================================= */
+
+      .catalog-image {
+        position: relative;
+
+        height: 460px;
+
+        overflow: hidden;
+
+        background: #eee7e2;
+      }
+
+      /* IMAGE */
+
+      .catalog-image img {
+        width: 100%;
+        height: 100%;
+
+        display: block;
+
+        object-fit: cover;
+
+        object-position: center;
+
+        transform: scale(1);
+
+        transition:
+          transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+          filter 0.6s ease;
+      }
+
+      /* IMAGE ZOOM HOVER */
+
+      .catalog-card:hover .catalog-image img {
+        transform: scale(1.075);
+      }
+
+      /* =========================================
+   IMAGE GRADIENT / OVERLAY
+========================================= */
+
+      .catalog-image::after {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        z-index: 1;
+
+        pointer-events: none;
+
+        background: linear-gradient(
+          to top,
+          rgba(46, 27, 29, 0.16) 0%,
+          rgba(46, 27, 29, 0.04) 35%,
+          rgba(46, 27, 29, 0) 70%
+        );
+
+        opacity: 0.35;
+
+        transition: opacity 0.5s ease;
+      }
+
+      /* OVERLAY HOVER */
+
+      .catalog-card:hover .catalog-image::after {
+        opacity: 0.8;
+      }
+
+      /* =========================================
+   CATALOG BADGE
+========================================= */
+
+      .catalog-badge {
+        position: absolute;
+
+        left: 18px;
+        top: 18px;
+
+        z-index: 2;
+
+        padding: 8px 14px;
+
+        border: 1px solid rgba(255, 255, 255, 0.7);
+
+        border-radius: 100px;
+
+        background: rgba(255, 255, 255, 0.78);
+
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+
+        color: var(--color-primary);
+
+        font-size: 0.66rem;
+        font-weight: 600;
+
+        letter-spacing: 0.08em;
+
+        text-transform: uppercase;
+
+        box-shadow: 0 8px 25px rgba(63, 40, 42, 0.08);
+
+        transition:
+          transform 0.4s ease,
+          background 0.4s ease,
+          box-shadow 0.4s ease;
+      }
+
+      /* BADGE HOVER */
+
+      .catalog-card:hover .catalog-badge {
+        transform: translateY(-2px);
+
+        background: rgba(255, 255, 255, 0.94);
+
+        box-shadow: 0 10px 30px rgba(63, 40, 42, 0.12);
+      }
+
+      /* =========================================
+   CATALOG BODY
+========================================= */
+
+      .catalog-body {
+        padding: 25px 24px 24px;
+      }
+
+      /* TEMPLATE NAME */
+
+      .catalog-title {
+        margin: 0;
+
+        color: var(--color-text);
+
+        font-family: var(--font-serif);
+
+        font-size: 1.6rem;
+        font-weight: 500;
+
+        line-height: 1.2;
+      }
+
+      /* =========================================
+   CATALOG FOOTER
+========================================= */
+
+      .catalog-footer {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 16px;
+
+        margin-top: 22px;
+      }
+
+      /* =========================================
+   TEMPLATE COLORS
+========================================= */
+
+      .catalog-colors {
+        display: flex;
+
+        align-items: center;
+
+        gap: 7px;
+      }
+
+      /* COLOR DOT */
+
+      .color-dot {
+        position: relative;
+
+        width: 20px;
+        height: 20px;
+
+        flex: 0 0 20px;
+
+        display: block;
+
+        border-radius: 50%;
+
+        background: var(--swatch-color);
+
+        border: 2px solid white;
+
+        box-shadow:
+          0 0 0 1px rgba(54, 44, 45, 0.13),
+          0 3px 8px rgba(54, 44, 45, 0.08);
+
+        cursor: default;
+
+        transition:
+          transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.3s ease;
+      }
+
+      /* COLOR DOT HOVER */
+
+      .color-dot:hover {
+        transform: translateY(-2px) scale(1.18);
+
+        box-shadow:
+          0 0 0 1px rgba(54, 44, 45, 0.18),
+          0 6px 14px rgba(54, 44, 45, 0.12);
+      }
+
+      /* =========================================
+   BUTTON LIHAT
+========================================= */
+
+      .catalog-action {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        min-width: 82px;
+
+        padding: 9px 16px;
+
+        border: 1px solid rgba(125, 62, 66, 0.18);
+
+        border-radius: 100px;
+
+        background: rgba(125, 62, 66, 0.04);
+
+        color: var(--color-primary);
+
+        font-family: var(--font-body);
+
+        font-size: 0.76rem;
+        font-weight: 500;
+
+        line-height: 1;
+
+        white-space: nowrap;
+
+        transition:
+          background 0.3s ease,
+          color 0.3s ease,
+          border-color 0.3s ease,
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+
+      /* BUTTON ICON */
+
+      .catalog-action i {
+        font-size: 0.72rem;
+
+        transition: transform 0.3s ease;
+      }
+
+      /* BUTTON HOVER */
+
+      .catalog-action:hover {
+        transform: translateY(-2px);
+
+        background: var(--color-primary);
+
+        border-color: var(--color-primary);
+
+        color: white;
+
+        box-shadow: 0 9px 20px rgba(125, 62, 66, 0.18);
+      }
+
+      /* ICON MOVEMENT */
+
+      .catalog-action:hover i {
+        transform: translate(2px, -2px);
+      }
+
+      /* =========================================
+   RESPONSIVE - TABLET
+========================================= */
+
+      @media (max-width: 991.98px) {
+        .catalog-image {
+          height: 440px;
+        }
+      }
+
+      /* =========================================
+   RESPONSIVE - MOBILE
+========================================= */
+
+      @media (max-width: 767.98px) {
+        .catalog-image {
+          height: 420px;
+        }
+      }
+
+      /* =========================================
+   RESPONSIVE - SMALL MOBILE
+========================================= */
+
+      @media (max-width: 575.98px) {
+        .catalog-filter {
+          flex-wrap: nowrap;
+
+          overflow-x: auto;
+
+          padding-bottom: 7px;
+
+          scrollbar-width: none;
+        }
+
+        .catalog-filter::-webkit-scrollbar {
+          display: none;
+        }
+
+        .filter-btn {
+          flex: 0 0 auto;
+        }
+
+        .catalog-card {
+          border-radius: 26px;
+        }
+
+        .catalog-image {
+          height: 390px;
+        }
+
+        .catalog-body {
+          padding: 22px 20px 21px;
+        }
+
+        .catalog-title {
+          font-size: 1.5rem;
+        }
+
+        .catalog-footer {
+          margin-top: 20px;
+        }
+
+        .catalog-action {
+          padding: 9px 15px;
+
+          min-width: 78px;
+        }
+      }
+
+      /* ==============================
+   CTA BUTTON
+============================== */
+
+      .btn-light-kopu {
+        padding: 13px 25px;
+
+        border: 1px solid var(--color-primary-dark);
+        border-radius: 100px;
+
+        background: var(--color-bg);
+
+        color: var(--color-primary);
+
+        font-weight: 500;
+
+        transition: all 0.3s ease;
+      }
+
+      .btn-light-kopu:hover {
+        transform: translateY(-2px);
+
+        background: var(--color-primary-dark);
+
+        color: var(--color-bg);
+      }
+      /* ==============================
+       FOOTER
+    ============================== */
+
+      footer {
+        padding: 70px 0 30px;
+      }
+
+      .footer-logo {
+        margin-bottom: 14px;
+
+        color: var(--color-primary);
+
+        font-family: var(--font-serif);
+
+        font-size: 2rem;
+      }
+
+      .footer-description {
+        max-width: 380px;
+
+        color: var(--color-muted);
+
+        font-size: 0.85rem;
+        line-height: 1.8;
+      }
+
+      .footer-link {
+        display: block;
+
+        margin-bottom: 10px;
+
+        color: var(--color-muted);
+
+        font-size: 0.85rem;
+      }
+
+      .footer-link:hover {
+        color: var(--color-primary);
+      }
+
+      .social-link {
+        width: 40px;
+        height: 40px;
+
+        display: inline-grid;
+        place-items: center;
+
+        margin-right: 6px;
+
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+
+        color: var(--color-primary);
+
+        transition: 0.25s;
+      }
+
+      .social-link:hover {
+        background: var(--color-primary);
+
+        color: white;
+      }
+
+      .footer-bottom {
+        margin-top: 60px;
+        padding-top: 25px;
+
+        border-top: 1px solid var(--border-color);
+
+        color: var(--color-muted);
+
+        font-size: 0.76rem;
+      }
+
+      /* ==============================
+       REVEAL ANIMATION
+    ============================== */
+
+      .reveal {
+        opacity: 0;
+
+        transform: translateY(35px);
+
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s ease;
+      }
+
+      .reveal.show {
+        opacity: 1;
+
+        transform: translateY(0);
+      }
+
+      /* ==============================
+       RESPONSIVE
+    ============================== */
+
+      @media (max-width: 991px) {
+        .navbar-collapse {
+          margin-top: 14px;
+          padding: 18px;
+
+          background: rgba(255, 255, 255, 0.92);
+
+          backdrop-filter: blur(15px);
+
+          border: 1px solid var(--border-color);
+          border-radius: 20px;
+        }
+
+        .hero {
+          padding-top: 125px;
+
+          text-align: center;
+        }
+
+        .hero-eyebrow {
+          justify-content: center;
+        }
+
+        .hero-title,
+        .hero-description {
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .hero-visual {
+          margin-top: 70px;
+        }
+
+        .floating-one {
+          left: 4%;
+        }
+
+        .floating-two {
+          right: 4%;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .section-space {
+          padding: 85px 0;
+        }
+
+        .hero {
+          padding-bottom: 65px;
+        }
+
+        .hero-title {
+          font-size: clamp(3rem, 14vw, 4.8rem);
+        }
+
+        .hero-visual {
+          min-height: 510px;
+        }
+
+        .phone-wrapper {
+          width: 235px;
+        }
+
+        .phone-screen {
+          height: 480px;
+        }
+
+        .floating-card {
+          display: none;
+        }
+
+        .visual-shape {
+          width: 330px;
+          height: 330px;
+        }
+
+        .brand-line-content {
+          gap: 13px 25px;
+
+          font-size: 0.88rem;
+        }
+
+        .brand-line-content span::after {
+          margin-left: 25px;
+        }
+
+        .catalog-image {
+          height: 420px;
+        }
+
+        .cta-box {
+          padding: 55px 30px;
+
+          border-radius: 30px;
+        }
+      }
+
+      @media (max-width: 575px) {
+        .container {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+
+        .hero-title {
+          line-height: 1;
+        }
+
+        .hero-description {
+          font-size: 0.9rem;
+        }
+
+        .hero-buttons {
+          display: grid !important;
+
+          gap: 10px !important;
+        }
+
+        .hero-buttons a {
+          width: 100%;
+        }
+
+        .catalog-filter {
+          overflow-x: auto;
+
+          flex-wrap: nowrap;
+
+          padding-bottom: 7px;
+        }
+
+        .filter-btn {
+          flex: 0 0 auto;
+        }
+
+        .catalog-image {
+          height: 390px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- =========================
+       NAVBAR
+  ========================== -->
+
+    <!-- =========================
+     NAVBAR
+========================== -->
+
+    <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
+      <div class="container">
+        <!-- LOGO -->
+        <a class="navbar-brand" href="#home">
+          <img
+            src="./assets/logo/logo_kopuundangan_mentah.png"
+            alt="Ko Pu Undangan"
+            class="navbar-logo"
+          />
+        </a>
+
+        <!-- MOBILE TOGGLER -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="bi bi-list"></i>
+        </button>
+
+        <!-- MENU -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link" href="#home"> Home </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#catalog"> Katalog </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#cara-pesan"> Cara Pesan </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#tentang"> Tentang </a>
+            </li>
+
+            <li class="nav-item ms-lg-3 mt-3 mt-lg-0">
+              <a
+                class="btn-nav"
+                href="https://wa.me/6281234567890"
+                target="_blank"
+              >
+                Pesan Sekarang
+
+                <i class="bi bi-arrow-up-right ms-1"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- =========================
+       HERO
+  ========================== -->
+
+    <section class="hero" id="home">
+      <div class="hero-decoration hero-circle-1"></div>
+      <div class="hero-decoration hero-circle-2"></div>
+
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-7">
+            <div class="hero-eyebrow">Digital Wedding Invitation</div>
+
+            <h1 class="hero-title">
+              Ko pu cinta,
+              <br />
+
+              ko pu
+              <span>cerita.</span>
+            </h1>
+
+            <p class="hero-description">
+              Tong bantu ceritakan ko pu hari bahagia melalui undangan digital
+              yang elegan, personal dan dibuat deng detail untuk setiap cerita.
+            </p>
+
+            <div class="hero-buttons d-flex gap-3">
+              <a href="#catalog" class="btn btn-kopu">
+                Lihat Katalog
+
+                <i class="bi bi-arrow-down ms-2"></i>
+              </a>
+
+              <a href="#cara-pesan" class="btn btn-kopu-outline">
+                Cara Pesan
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="hero-visual">
+              <div class="visual-shape"></div>
+
+              <div class="floating-card floating-one">
+                <div class="d-flex gap-3 align-items-center">
+                  <i class="bi bi-heart-fill"></i>
+
+                  <div>
+                    <p class="floating-card-title">Personal</p>
+
+                    <p class="floating-card-text">Dibuat untuk cerita kalian</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="phone-wrapper">
+                <div class="phone">
+                  <div class="phone-notch"></div>
+
+                  <div class="phone-screen">
+                    <!-- Full Image -->
+                    <img
+                      src="./assets/image/phone-image.png"
+                      alt="Wedding Couple"
+                      class="phone-image"
+                    />
+
+                    <!-- Gradient -->
+                    <div class="phone-gradient"></div>
+
+                    <!-- Content -->
+                    <div class="phone-content">
+                      <p class="phone-small">The Wedding Of</p>
+
+                      <h2 class="phone-name">Raka & Alya</h2>
+
+                      <p class="phone-date">18 • 10 • 2026</p>
+
+                      <a href="#" class="phone-button">
+                        Buka Undangan
+
+                        <i class="bi bi-envelope-open ms-1"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="floating-card floating-two">
+                <div class="d-flex gap-3 align-items-center">
+                  <i class="bi bi-stars"></i>
+
+                  <div>
+                    <p class="floating-card-title">Elegant Design</p>
+
+                    <p class="floating-card-text">Simple, clean & memorable</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       BRAND LINE
+  ========================== -->
+
+    <div class="brand-line">
+      <div class="container">
+        <div class="brand-line-content">
+          <span>Beautifully Designed</span>
+
+          <span>Made With Love</span>
+
+          <span>Your Story Matters</span>
+
+          <span>Digital Invitation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================
+       FEATURES
+  ========================== -->
+
+    <section class="section-space">
+      <div class="container">
+        <div class="row mb-5 align-items-end">
+          <div class="col-lg-7">
+            <div class="section-eyebrow">Kenapa harus Ko Pu Undangan ?</div>
+
+            <h2 class="section-title">
+              Tra cuma undangan, ini <em>ko pu cerita.</em>
+            </h2>
+          </div>
+
+          <div class="col-lg-5">
+            <p class="section-description">
+              Setiap undangan dibuat untuk memberikan pengalaman yang cantik
+              sejak pertama dibuka sampai tamu mengirim ucapan untuk kalian.
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3 reveal">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-phone"></i>
+              </div>
+
+              <h3 class="feature-title">Responsive</h3>
+
+              <p class="feature-description">
+                Nyaman dibuka melalui smartphone, tablet maupun desktop.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-chat-heart"></i>
+              </div>
+
+              <h3 class="feature-title">RSVP & Wishes</h3>
+
+              <p class="feature-description">
+                Tamu dapat mengonfirmasi kehadiran sekaligus mengirim ucapan.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+
+              <h3 class="feature-title">Lokasi Acara</h3>
+
+              <p class="feature-description">
+                Arahkan tamu langsung menuju lokasi acara dengan Google Maps.
+              </p>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 reveal">
+            <div class="feature-card">
+              <div class="feature-icon">
+                <i class="bi bi-images"></i>
+              </div>
+
+              <h3 class="feature-title">Gallery</h3>
+
+              <p class="feature-description">
+                Ceritakan perjalanan kalian melalui foto dan video pilihan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       CATALOG
+  ========================== -->
+
+    <section class="catalog-section section-space" id="catalog">
+      <div class="container">
+        <div class="row align-items-end mb-5">
+          <div class="col-lg-7">
+            <div class="section-eyebrow">Our Collection</div>
+
+            <h2 class="section-title">
+              Temukan design sesuai dengan <em>ko pu rasa.</em>
+            </h2>
+          </div>
+
+          <div class="col-lg-5">
+            <div class="catalog-filter justify-content-lg-end mt-4 mt-lg-0">
+              <button class="filter-btn active" data-filter="all">Semua</button>
+
+              <button class="filter-btn" data-filter="romantic">
+                Romantic
+              </button>
+
+              <button class="filter-btn" data-filter="minimal">Minimal</button>
+
+              <button class="filter-btn" data-filter="classic">Classic</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4" id="catalogGrid">
+          <!-- TEMPLATE 1 -->
+
+          <div
+            class="col-md-6 col-lg-4 catalog-item reveal"
+            data-category="romantic"
+          >
+            <article class="catalog-card">
+              <div class="catalog-image">
+                <img
+                  src="./assets/image/Katalog/Rosalia - Template.png"
+                  alt="Wedding Template"
+                />
+
+                <div class="catalog-badge">Romantic</div>
+              </div>
+
+              <div class="catalog-body">
+                <h3 class="catalog-title">Rosalia Blush</h3>
+
+                <div class="catalog-footer">
+                  <!-- PILIHAN WARNA -->
+
+                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #ffb2c1"
+                      title="Primary"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #752c30"
+                      title="Secondary"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #c0ad75"
+                      title="aksen"
+                    ></span>
+                  </div>
+
+                  <!-- BUTTON -->
+
+                  <a
+                    href="template/Rosalia Blush/index.html"
+                    class="catalog-action"
+                    aria-label="Lihat template Amore"
+                  >
+                    Lihat template
+
+                    <i class="bi bi-arrow-up-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- TEMPLATE 2 -->
+
+          <div
+            class="col-md-6 col-lg-4 catalog-item reveal"
+            data-category="minimal"
+          >
+            <article class="catalog-card">
+              <div class="catalog-image">
+                <img
+                  src="./assets/images/template-02.webp"
+                  alt="Wedding Template"
+                />
+
+                <div class="catalog-badge">Minimal</div>
+              </div>
+
+              <div class="catalog-body">
+                <h3 class="catalog-title">Amore</h3>
+                <div class="catalog-footer">
+                  <!-- PILIHAN WARNA -->
+
+                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #f2d5d8"
+                      title="Rose"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #9c6a6d"
+                      title="Dusty Rose"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #d6c495"
+                      title="Champagne"
+                    ></span>
+                  </div>
+
+                  <!-- BUTTON -->
+
+                  <a
+                    href="#"
+                    class="catalog-action"
+                    aria-label="Lihat template Amore"
+                  >
+                    Lihat template
+
+                    <i class="bi bi-arrow-up-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- TEMPLATE 3 -->
+
+          <div
+            class="col-md-6 col-lg-4 catalog-item reveal"
+            data-category="classic"
+          >
+            <article class="catalog-card">
+              <div class="catalog-image">
+                <img
+                  src="./assets/images/template-03.webp"
+                  alt="Wedding Template"
+                />
+
+                <div class="catalog-badge">Classic</div>
+              </div>
+
+              <div class="catalog-body">
+                <h3 class="catalog-title">Amore</h3>
+
+                <div class="catalog-footer">
+                  <!-- PILIHAN WARNA -->
+
+                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #f2d5d8"
+                      title="Rose"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #9c6a6d"
+                      title="Dusty Rose"
+                    ></span>
+
+                    <span
+                      class="color-dot"
+                      style="--swatch-color: #d6c495"
+                      title="Champagne"
+                    ></span>
+                  </div>
+
+                  <!-- BUTTON -->
+
+                  <a
+                    href="#"
+                    class="catalog-action"
+                    aria-label="Lihat template Amore"
+                  >
+                    Lihat template
+
+                    <i class="bi bi-arrow-up-right"></i>
+                  </a>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="text-center mt-5">
+          <a href="#" class="btn btn-kopu-outline">
+            Lihat Semua Template
+
+            <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       HOW TO ORDER
+  ========================== -->
+
+    <section class="section-space" id="cara-pesan">
+      <div class="container">
+        <div class="text-center mb-5">
+          <div class="section-eyebrow">Cara Pesan</div>
+
+          <h2 class="section-title mx-auto">
+            sisanya tong yang urus, pilih <em>ko pu design</em>
+          </h2>
+        </div>
+
+        <div class="row g-5">
+          <div class="col-md-4 reveal">
+            <div class="process-number">01</div>
+
+            <h3 class="process-title">Pilih desain</h3>
+
+            <p class="process-description">
+              Lihat katalog dan pilih template yang paling cocok dengan cerita
+              dan konsep pernikahan kalian.
+            </p>
+          </div>
+
+          <div class="col-md-4 reveal">
+            <div class="process-number">02</div>
+
+            <h3 class="process-title">Kirim data</h3>
+
+            <p class="process-description">
+              Kirim nama pasangan, tanggal acara, lokasi, foto, cerita dan
+              informasi lainnya.
+            </p>
+          </div>
+
+          <div class="col-md-4 reveal">
+            <div class="process-number">03</div>
+
+            <h3 class="process-title">Undangan siap</h3>
+
+            <p class="process-description">
+              Setelah proses desain selesai, ko tinggal bagikan link undangan
+              kepada keluarga dan teman.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       CTA
+  ========================== -->
+
+    <section class="pb-5" id="contact">
+      <div class="container">
+        <div class="cta-box reveal">
+          <div class="position-relative z-2">
+            <div class="section-eyebrow text-white-50">Start Your Story</div>
+
+            <h2 class="cta-title">
+              Su ada desain yang sesuai dengan <em>ko pu suka</em>?
+            </h2>
+
+            <p class="cta-description">
+              Ceritakan konsep pernikahan kalian. Tong bantu jadikan ko pu
+              cerita sebagai undangan digital yang cantik dan berkesan.
+            </p>
+
+            <a
+              href="https://wa.me/6281344703884"
+              target="_blank"
+              class="btn btn-light-kopu"
+            >
+              <i class="bi bi-whatsapp me-2"></i>
+
+              Chat Sekarang
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================
+       FOOTER
+  ========================== -->
+
+    <footer>
+      <div class="container">
+        <div class="row g-5">
+          <div class="col-lg-6">
+            <div class="footer-logo">Ko Pu Undangan</div>
+
+            <p class="footer-description">
+              Digital wedding invitation yang dibuat dengan hati, detail dan
+              cerita untuk setiap hari bahagia.
+            </p>
+
+            <div class="mt-4">
+              <a href="#" class="social-link">
+                <i class="bi bi-instagram"></i>
+              </a>
+
+              <a href="#" class="social-link">
+                <i class="bi bi-whatsapp"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <h6 class="mb-3">Menu</h6>
+
+            <a href="#home" class="footer-link"> Home </a>
+
+            <a href="#catalog" class="footer-link"> Katalog </a>
+
+            <a href="#cara-pesan" class="footer-link"> Cara Pesan </a>
+          </div>
+
+          <div class="col-6 col-lg-3">
+            <h6 class="mb-3">Contact</h6>
+
+            <a href="#" class="footer-link"> Instagram </a>
+
+            <a href="#" class="footer-link"> WhatsApp </a>
+          </div>
+        </div>
+
+        <div
+          class="footer-bottom d-flex flex-column flex-md-row justify-content-between gap-2"
+        >
+          <span> © 2026 Ko Pu Undangan. </span>
+
+          <span> Ko pu cinta, ko pu cerita, ko pu undangan ♡ </span>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      /* ==============================
+       NAVBAR SCROLL
+    ============================== */
+
+      const navbar = document.querySelector(".navbar");
+
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 40) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      /* ==============================
+       SCROLL REVEAL
+    ============================== */
+
+      const revealElements = document.querySelectorAll(".reveal");
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("show");
+
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.12,
+        },
+      );
+
+      revealElements.forEach((element) => {
+        revealObserver.observe(element);
+      });
+
+      /* ==============================
+       CATALOG FILTER
+    ============================== */
+
+      const filterButtons = document.querySelectorAll(".filter-btn");
+
+      const catalogItems = document.querySelectorAll(".catalog-item");
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          filterButtons.forEach((btn) => btn.classList.remove("active"));
+
+          button.classList.add("active");
+
+          const filter = button.dataset.filter;
+
+          catalogItems.forEach((item) => {
+            const category = item.dataset.category;
+
+            if (filter === "all" || filter === category) {
+              item.style.display = "";
+            } else {
+              item.style.display = "none";
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
