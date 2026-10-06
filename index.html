@@ -1022,6 +1022,64 @@ background putih menyatu dengan navbar.
         flex-wrap: wrap;
       }
 
+      .catalog-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .catalog-page-numbers {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .catalog-page-button {
+        display: inline-flex;
+        min-width: 42px;
+        height: 42px;
+        align-items: center;
+        justify-content: center;
+        padding: 0 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--color-muted);
+        font-family: var(--font-body);
+        font-size: 0.9rem;
+        transition:
+          background 0.25s ease,
+          border-color 0.25s ease,
+          color 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .catalog-page-button:not(:disabled) {
+        cursor: pointer;
+      }
+
+      .catalog-page-button:not(:disabled):hover {
+        transform: translateY(-2px);
+        border-color: var(--color-primary);
+        color: var(--color-primary);
+      }
+
+      .catalog-page-button[aria-current="page"] {
+        border-color: var(--color-primary);
+        background: var(--color-primary);
+        color: var(--color-white);
+      }
+
+      .catalog-page-button:disabled {
+        opacity: 0.45;
+      }
+
+      .catalog-page-button:focus-visible {
+        outline: 2px solid var(--color-primary);
+        outline-offset: 3px;
+      }
+
       /* FILTER BUTTON */
 
       .filter-btn {
@@ -2014,202 +2072,39 @@ background putih menyatu dengan navbar.
           </div>
 
           <div class="col-lg-5">
-            <div class="catalog-filter justify-content-lg-end mt-4 mt-lg-0">
-              <button class="filter-btn active" data-filter="all">Semua</button>
-
-              <button class="filter-btn" data-filter="romantic">
-                Romantic
-              </button>
-
-              <button class="filter-btn" data-filter="minimal">Minimal</button>
-
-              <button class="filter-btn" data-filter="classic">Classic</button>
-            </div>
+            <div
+              class="catalog-filter justify-content-lg-end mt-4 mt-lg-0"
+              id="catalogFilters"
+            ></div>
           </div>
         </div>
 
-        <div class="row g-4" id="catalogGrid">
-          <!-- TEMPLATE 1 -->
+        <div class="row g-4" id="catalogGrid"></div>
 
-          <div
-            class="col-md-6 col-lg-4 catalog-item reveal"
-            data-category="romantic"
+        <nav
+          class="catalog-pagination mt-5"
+          aria-label="Navigasi halaman katalog"
+        >
+          <button
+            type="button"
+            class="catalog-page-button"
+            id="catalogPrevious"
+            aria-label="Halaman sebelumnya"
+            disabled
           >
-            <article class="catalog-card">
-              <div class="catalog-image">
-                <img
-                  src="./assets/image/Katalog/Rosalia - Template.png"
-                  alt="Wedding Template"
-                />
-
-                <div class="catalog-badge">Romantic</div>
-              </div>
-
-              <div class="catalog-body">
-                <h3 class="catalog-title">Rosalia Blush</h3>
-
-                <div class="catalog-footer">
-                  <!-- PILIHAN WARNA -->
-
-                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #ffb2c1"
-                      title="Primary"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #752c30"
-                      title="Secondary"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #c0ad75"
-                      title="aksen"
-                    ></span>
-                  </div>
-
-                  <!-- BUTTON -->
-
-                  <a
-                    href="template/Rosalia Blush/index.html"
-                    class="catalog-action"
-                    aria-label="Lihat template Amore"
-                  >
-                    Lihat template
-
-                    <i class="bi bi-arrow-up-right"></i>
-                  </a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- TEMPLATE 2 -->
-
-          <div
-            class="col-md-6 col-lg-4 catalog-item reveal"
-            data-category="minimal"
+            <i class="bi bi-chevron-left" aria-hidden="true"></i>
+          </button>
+          <div class="catalog-page-numbers" id="catalogPageNumbers"></div>
+          <button
+            type="button"
+            class="catalog-page-button"
+            id="catalogNext"
+            aria-label="Halaman berikutnya"
+            disabled
           >
-            <article class="catalog-card">
-              <div class="catalog-image">
-                <img
-                  src="./assets/images/template-02.webp"
-                  alt="Wedding Template"
-                />
-
-                <div class="catalog-badge">Minimal</div>
-              </div>
-
-              <div class="catalog-body">
-                <h3 class="catalog-title">Amore</h3>
-                <div class="catalog-footer">
-                  <!-- PILIHAN WARNA -->
-
-                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #f2d5d8"
-                      title="Rose"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #9c6a6d"
-                      title="Dusty Rose"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #d6c495"
-                      title="Champagne"
-                    ></span>
-                  </div>
-
-                  <!-- BUTTON -->
-
-                  <a
-                    href="#"
-                    class="catalog-action"
-                    aria-label="Lihat template Amore"
-                  >
-                    Lihat template
-
-                    <i class="bi bi-arrow-up-right"></i>
-                  </a>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <!-- TEMPLATE 3 -->
-
-          <div
-            class="col-md-6 col-lg-4 catalog-item reveal"
-            data-category="classic"
-          >
-            <article class="catalog-card">
-              <div class="catalog-image">
-                <img
-                  src="./assets/images/template-03.webp"
-                  alt="Wedding Template"
-                />
-
-                <div class="catalog-badge">Classic</div>
-              </div>
-
-              <div class="catalog-body">
-                <h3 class="catalog-title">Amore</h3>
-
-                <div class="catalog-footer">
-                  <!-- PILIHAN WARNA -->
-
-                  <div class="catalog-colors" aria-label="Pilihan warna Amore">
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #f2d5d8"
-                      title="Rose"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #9c6a6d"
-                      title="Dusty Rose"
-                    ></span>
-
-                    <span
-                      class="color-dot"
-                      style="--swatch-color: #d6c495"
-                      title="Champagne"
-                    ></span>
-                  </div>
-
-                  <!-- BUTTON -->
-
-                  <a
-                    href="#"
-                    class="catalog-action"
-                    aria-label="Lihat template Amore"
-                  >
-                    Lihat template
-
-                    <i class="bi bi-arrow-up-right"></i>
-                  </a>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div class="text-center mt-5">
-          <a href="#" class="btn btn-kopu-outline">
-            Lihat Semua Template
-
-            <i class="bi bi-arrow-right ms-2"></i>
-          </a>
-        </div>
+            <i class="bi bi-chevron-right" aria-hidden="true"></i>
+          </button>
+        </nav>
       </div>
     </section>
 
@@ -2400,28 +2295,247 @@ background putih menyatu dengan navbar.
        CATALOG FILTER
     ============================== */
 
-      const filterButtons = document.querySelectorAll(".filter-btn");
+      // Tambahkan atau ubah template katalog melalui data di bawah ini.
+      const catalogTemplates = [
+        {
+          name: "Rosalia Blush",
+          category: "romantic",
+          categoryLabel: "Romantic",
+          previewImage: "./assets/image/Katalog/Rosalia - Template.png",
+          colors: [
+            { label: "Primary", value: "#ffb2c1" },
+            { label: "Secondary", value: "#752c30" },
+            { label: "Aksen", value: "#c0ad75" },
+          ],
+          sourceTemplate: "template/rosalia_blush/index.html",
+        },
+        {
+          name: "Rosalia Blush",
+          category: "romantic",
+          categoryLabel: "Romantic",
+          previewImage: "./assets/image/Katalog/Rosalia - Template.png",
+          colors: [
+            { label: "Primary", value: "#ffb2c1" },
+            { label: "Secondary", value: "#752c30" },
+            { label: "Aksen", value: "#c0ad75" },
+          ],
+          sourceTemplate: "undangan/musa-lina/index.html",
+        },
+        {
+          name: "Amore",
+          category: "minimal",
+          categoryLabel: "Minimal",
+          previewImage: "./assets/images/template-02.webp",
+          colors: [
+            { label: "Rose", value: "#f2d5d8" },
+            { label: "Dusty Rose", value: "#9c6a6d" },
+            { label: "Champagne", value: "#d6c495" },
+          ],
+          sourceTemplate: "#",
+        },
+        {
+          name: "Amore",
+          category: "classic",
+          categoryLabel: "Classic",
+          previewImage: "./assets/images/template-03.webp",
+          colors: [
+            { label: "Rose", value: "#f2d5d8" },
+            { label: "Dusty Rose", value: "#9c6a6d" },
+            { label: "Champagne", value: "#d6c495" },
+          ],
+          sourceTemplate: "#",
+        },
+      ];
 
-      const catalogItems = document.querySelectorAll(".catalog-item");
+      const catalogGrid = document.querySelector("#catalogGrid");
+      const catalogFilters = document.querySelector("#catalogFilters");
+      const catalogPagination = document.querySelector(".catalog-pagination");
+      const catalogPageNumbers = document.querySelector("#catalogPageNumbers");
+      const catalogPrevious = document.querySelector("#catalogPrevious");
+      const catalogNext = document.querySelector("#catalogNext");
+      const catalogItems = [];
+      const catalogPageSize = 6;
+      let activeCatalogFilter = "all";
+      let activeCatalogPage = 1;
 
-      filterButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-          filterButtons.forEach((btn) => btn.classList.remove("active"));
+      const createCatalogCard = (template) => {
+        const item = document.createElement("div");
+        item.className = "col-md-6 col-lg-4 catalog-item reveal";
+        item.dataset.category = template.category;
 
-          button.classList.add("active");
+        const article = document.createElement("article");
+        article.className = "catalog-card";
 
-          const filter = button.dataset.filter;
+        const imageContainer = document.createElement("div");
+        imageContainer.className = "catalog-image";
 
-          catalogItems.forEach((item) => {
-            const category = item.dataset.category;
+        const image = document.createElement("img");
+        image.src = template.previewImage;
+        image.alt = `${template.name} wedding template`;
 
-            if (filter === "all" || filter === category) {
-              item.style.display = "";
+        const badge = document.createElement("div");
+        badge.className = "catalog-badge";
+        badge.textContent = template.categoryLabel;
+        imageContainer.append(image, badge);
+
+        const body = document.createElement("div");
+        body.className = "catalog-body";
+
+        const title = document.createElement("h3");
+        title.className = "catalog-title";
+        title.textContent = template.name;
+
+        const footer = document.createElement("div");
+        footer.className = "catalog-footer";
+
+        const colors = document.createElement("div");
+        colors.className = "catalog-colors";
+        colors.setAttribute("aria-label", `Palet warna ${template.name}`);
+
+        template.colors.forEach((color) => {
+          const dot = document.createElement("span");
+          dot.className = "color-dot";
+          dot.style.setProperty("--swatch-color", color.value);
+          dot.title = color.label;
+          colors.append(dot);
+        });
+
+        const link = document.createElement("a");
+        link.href = template.sourceTemplate;
+        link.className = "catalog-action";
+        link.setAttribute("aria-label", `Lihat template ${template.name}`);
+        link.append(document.createTextNode("Lihat template"));
+
+        const icon = document.createElement("i");
+        icon.className = "bi bi-arrow-up-right";
+        link.append(icon);
+
+        footer.append(colors, link);
+        body.append(title, footer);
+        article.append(imageContainer, body);
+        item.append(article);
+        catalogGrid.append(item);
+        catalogItems.push(item);
+        revealObserver.observe(item);
+      };
+
+      const renderCatalogFilters = () => {
+        const categories = [
+          ...new Map(
+            catalogTemplates.map((template) => [
+              template.category,
+              template.categoryLabel,
+            ]),
+          ),
+        ];
+        const filters = [["all", "Semua"], ...categories];
+
+        filters.forEach(([category, label], index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = `filter-btn${index === 0 ? " active" : ""}`;
+          button.dataset.filter = category;
+          button.textContent = label;
+          catalogFilters.append(button);
+        });
+      };
+
+      const renderCatalogPage = () => {
+        const filteredItems = catalogItems.filter(
+          (item) =>
+            activeCatalogFilter === "all" ||
+            item.dataset.category === activeCatalogFilter,
+        );
+        const pageCount = Math.max(
+          1,
+          Math.ceil(filteredItems.length / catalogPageSize),
+        );
+        activeCatalogPage = Math.min(Math.max(activeCatalogPage, 1), pageCount);
+
+        const startIndex = (activeCatalogPage - 1) * catalogPageSize;
+        const visibleItems = new Set(
+          filteredItems.slice(startIndex, startIndex + catalogPageSize),
+        );
+
+        catalogItems.forEach((item) => {
+          const isVisible = visibleItems.has(item);
+          item.style.display = isVisible ? "" : "none";
+
+          if (isVisible) {
+            item.classList.remove("show");
+            revealObserver.observe(item);
+          } else {
+            revealObserver.unobserve(item);
+            item.classList.remove("show");
+          }
+        });
+
+        if (catalogPageNumbers.childElementCount !== pageCount) {
+          catalogPageNumbers.replaceChildren();
+          for (let page = 1; page <= pageCount; page += 1) {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "catalog-page-button";
+            button.dataset.pageNumber = page;
+            catalogPageNumbers.append(button);
+          }
+        }
+
+        catalogPageNumbers
+          .querySelectorAll("[data-page-number]")
+          .forEach((button) => {
+            const page = Number(button.dataset.pageNumber);
+            button.textContent = page;
+            button.setAttribute("aria-label", `Halaman ${page}`);
+            if (page === activeCatalogPage) {
+              button.setAttribute("aria-current", "page");
             } else {
-              item.style.display = "none";
+              button.removeAttribute("aria-current");
             }
           });
-        });
+
+        catalogPrevious.disabled = activeCatalogPage === 1;
+        catalogNext.disabled = activeCatalogPage === pageCount;
+      };
+
+      catalogTemplates.forEach(createCatalogCard);
+      renderCatalogFilters();
+      renderCatalogPage();
+
+      catalogFilters.addEventListener("click", (event) => {
+        const button = event.target.closest(".filter-btn");
+
+        if (!button) {
+          return;
+        }
+
+        catalogFilters
+          .querySelectorAll(".filter-btn")
+          .forEach((filterButton) => filterButton.classList.remove("active"));
+        button.classList.add("active");
+        activeCatalogFilter = button.dataset.filter;
+        activeCatalogPage = 1;
+        renderCatalogPage();
+      });
+
+      catalogPagination.addEventListener("click", (event) => {
+        const button = event.target.closest(
+          "[data-page-number], #catalogPrevious, #catalogNext",
+        );
+
+        if (!button || button.disabled) {
+          return;
+        }
+
+        if (button.id === "catalogPrevious") {
+          activeCatalogPage -= 1;
+        } else if (button.id === "catalogNext") {
+          activeCatalogPage += 1;
+        } else {
+          activeCatalogPage = Number(button.dataset.pageNumber);
+        }
+
+        renderCatalogPage();
       });
     </script>
   </body>
