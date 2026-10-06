@@ -1,0 +1,8 @@
+[
+  { "type": "image", "src": "./assets/background-CHTUO_wb.webp" },
+  { "type": "image", "src": "./assets/background_4-B7vmXLMR.webp" },
+  { "type": "image", "src": "./assets/frame_1-WmbX20O9.webp" },
+  { "type": "image", "src": "./assets/flowers_frame_top-BqAPmHx_.webp" },
+  { "type": "video", "src": "./assets/background-Riqtgcu8.mp4" },
+  { "type": "audio", "src": "./assets/audio-BS-fMSeU.mp3" }
+]

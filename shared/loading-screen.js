@@ -187,29 +187,6 @@
   `;
 
   document.body.prepend(loader);
-  let loaderActive = true;
-
-  const preventPageScroll = (event) => {
-    if (loaderActive) {
-      event.preventDefault();
-    }
-  };
-  const preventScrollKeys = (event) => {
-    if (loaderActive && ["ArrowDown", "ArrowUp", "End", "Home", "PageDown", "PageUp", " "].includes(event.key)) {
-      event.preventDefault();
-    }
-  };
-  const keepPageAtStart = () => {
-    if (loaderActive && window.scrollY !== 0) {
-      window.scrollTo(0, 0);
-    }
-  };
-
-  document.addEventListener("wheel", preventPageScroll, { capture: true, passive: false });
-  document.addEventListener("touchmove", preventPageScroll, { capture: true, passive: false });
-  document.addEventListener("keydown", preventScrollKeys, true);
-  window.addEventListener("scroll", keepPageAtStart, { passive: true });
-  keepPageAtStart();
 
   const themeStyles = getComputedStyle(document.documentElement);
   const themeValue = (...names) => {
@@ -237,43 +214,23 @@
       getComputedStyle(document.body).color,
   );
 
-  const pendingAssets = new Set();
-  const trackedAssets = new WeakMap();
-  const countedResourceUrls = new Set();
   const progressStatus = loader.querySelector(".kopu-loading-screen__status");
   const progressBar = loader.querySelector(".kopu-loading-screen__progress");
-  let completedAssets = 0;
+  let criticalAssets = [];
+  const pendingAssets = new Set();
+  const completedAssetUrls = new Set();
   let visualProgress = 0;
   let downloadedBytes = 0;
-  let initialScanComplete = false;
-  let documentReady = document.readyState !== "loading";
-  let resolveAssets;
+  let finishAssets;
   const assetsReady = new Promise((resolve) => {
-    resolveAssets = resolve;
+    finishAssets = resolve;
   });
 
   const formatMegabytes = (bytes) => `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 
-  const countCompletedResource = (source) => {
-    if (!source || countedResourceUrls.has(source)) {
-      return;
-    }
-    countedResourceUrls.add(source);
-    const entry = performance.getEntriesByName(source, "resource").at(-1);
-    if (entry) {
-      downloadedBytes += entry.transferSize || entry.encodedBodySize || 0;
-    }
-  };
-
-  const updateProgress = (contentReady = false) => {
-    const pendingCount = pendingAssets.size;
-    const trackedAssetCount = completedAssets + pendingCount;
-    const assetRatio =
-      trackedAssetCount > 0
-        ? Math.min(1, completedAssets / trackedAssetCount)
-        : 0;
-    // Track observed asset completion without starting duplicate network requests.
-    const targetProgress = contentReady ? 100 : Math.min(90, assetRatio * 90);
+  const updateProgress = () => {
+    const completedCount = completedAssetUrls.size;
+    const targetProgress = criticalAssets.length > 0 ? (completedCount / criticalAssets.length) * 100 : 100;
     visualProgress = Math.max(visualProgress, targetProgress);
     progressBar.style.setProperty("--kopu-loading-progress", String(visualProgress / 100));
     progressBar.setAttribute("aria-valuenow", String(Math.round(visualProgress)));
@@ -284,162 +241,95 @@
     }
   };
 
-  const finishWhenReady = () => {
-    const appRoot = document.getElementById("root");
-    const contentReady =
-      initialScanComplete &&
-      pendingAssets.size === 0 &&
-      (appRoot
-        ? document.body.dataset.kopuWaitForMain === "false" || appRoot.querySelector("main")
-        : documentReady);
-    updateProgress(contentReady);
-    if (contentReady) {
-      resolveAssets();
-    }
-  };
-
   const settleAsset = (asset, failed) => {
-    if (!pendingAssets.delete(asset)) {
+    if (!pendingAssets.delete(asset.url)) {
       return;
     }
-    countCompletedResource(trackedAssets.get(asset) || asset.currentSrc || asset.src);
-    completedAssets += 1;
+    completedAssetUrls.add(asset.url);
+    const resource = performance.getEntriesByName(asset.url, "resource").at(-1);
+    if (resource) {
+      downloadedBytes += resource.transferSize || resource.encodedBodySize || 0;
+    }
     if (failed) {
-      console.error("Gagal memuat aset undangan:", asset.currentSrc || asset.src);
+      console.error("Gagal memuat aset kritis undangan:", asset.url);
     }
     updateProgress();
-    finishWhenReady();
+    if (pendingAssets.size === 0) {
+      finishAssets();
+    }
   };
 
-  const trackImage = (image) => {
-    const source = image.currentSrc || image.src || image.srcset;
-    const previousSource = trackedAssets.get(image);
-    if (!source || previousSource === source) {
-      return;
-    }
-    const bounds = image.getBoundingClientRect();
-    const isInInitialViewport = bounds.bottom > 0 && bounds.top < window.innerHeight;
-    if (!isInInitialViewport) {
-      return;
-    }
-    if (previousSource) {
-      pendingAssets.delete(image);
-    }
-    trackedAssets.set(image, source);
-    if (image.complete) {
-      if (image.naturalWidth === 0) {
-        console.error("Gagal memuat gambar undangan:", source);
-      }
-      countCompletedResource(source);
-      completedAssets += 1;
-      updateProgress();
-      return;
-    }
-    pendingAssets.add(image);
-    image.addEventListener(
-      "load",
-      () => {
-        if (trackedAssets.get(image) === source) {
-          settleAsset(image, false);
+  const preloadCriticalAsset = (asset) =>
+    new Promise((resolve) => {
+      const url = new URL(asset.src, document.baseURI).href;
+      const element = asset.type === "image" ? new Image() : document.createElement(asset.type);
+      const readinessEvent = asset.type === "image" ? "load" : asset.type === "audio" ? "loadedmetadata" : "loadeddata";
+      let settled = false;
+      const finish = (failed) => {
+        if (settled) {
+          return;
         }
-      },
-      { once: true },
-    );
-    image.addEventListener(
-      "error",
-      () => {
-        if (trackedAssets.get(image) === source) {
-          settleAsset(image, true);
-        }
-      },
-      { once: true },
-    );
-    updateProgress();
-  };
+        settled = true;
+        element.removeEventListener(readinessEvent, onReady);
+        element.removeEventListener("error", onError);
+        settleAsset({ url }, failed);
+        resolve();
+      };
+      const onReady = () => finish(false);
+      const onError = () => finish(true);
 
-  const trackMedia = (media) => {
-    const source = media.currentSrc || media.src || media.querySelector("source[src]")?.src;
-    const previousSource = trackedAssets.get(media);
-    if (!source || previousSource === source) {
-      return;
-    }
-    trackedAssets.set(media, source);
-    if (media.error) {
-      console.error("Gagal memuat media undangan:", source);
-      return;
-    }
-
-    // Media keeps loading through the browser; it must not hold the invitation behind the loader.
-    const recordMediaBytes = () => {
-      countCompletedResource(source);
-      updateProgress();
-    };
-    if (media.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
-      recordMediaBytes();
-    } else {
-      media.addEventListener("loadeddata", recordMediaBytes, { once: true });
-    }
-    media.addEventListener(
-      "error",
-      () => console.error("Gagal memuat media undangan:", source),
-      { once: true },
-    );
-  };
-
-  const scanElement = (node) => {
-    if (node.nodeType !== Node.ELEMENT_NODE || loader.contains(node)) {
-      return;
-    }
-    if (node.matches("img")) {
-      trackImage(node);
-    } else if (node.matches("audio, video")) {
-      trackMedia(node);
-    } else if (node.matches("source")) {
-      const media = node.closest("audio, video");
-      if (media) {
-        trackMedia(media);
-      }
-    }
-  };
-
-  const scan = (node) => {
-    if (node.nodeType !== Node.ELEMENT_NODE) {
-      return;
-    }
-    scanElement(node);
-    node.querySelectorAll("*").forEach(scanElement);
-  };
-
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (loader.contains(mutation.target)) {
-        return;
-      }
-      if (mutation.type === "attributes") {
-        scanElement(mutation.target);
+      pendingAssets.add(url);
+      element.addEventListener(readinessEvent, onReady, { once: true });
+      element.addEventListener("error", onError, { once: true });
+      if (asset.type !== "image") {
+        element.preload = "auto";
       } else {
-        mutation.addedNodes.forEach(scan);
+        element.decoding = "async";
       }
+      element.src = url;
+      if (asset.type === "image" && element.complete) {
+        finish(element.naturalWidth === 0);
+      } else if (asset.type === "video" && element.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        finish(false);
+      } else if (asset.type === "audio" && element.readyState >= HTMLMediaElement.HAVE_METADATA) {
+        finish(false);
+      }
+      updateProgress();
     });
-    finishWhenReady();
-  });
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-    attributes: true,
-    attributeFilter: ["src", "srcset", "loading", "poster"],
-  });
-  document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-      documentReady = true;
-      finishWhenReady();
-    },
-    { once: true },
-  );
-  scan(document.body);
-  initialScanComplete = true;
-  finishWhenReady();
+
+  const startCriticalPreload = async () => {
+    try {
+      const manifestUrl = new URL("./loading-assets.json", document.baseURI);
+      const response = await fetch(manifestUrl);
+      if (!response.ok) {
+        throw new Error(`Gagal memuat manifest aset kritis: ${response.status} ${response.statusText}`);
+      }
+      const manifest = await response.json();
+      if (!Array.isArray(manifest)) {
+        throw new TypeError("Manifest aset kritis harus berupa array");
+      }
+      criticalAssets = manifest;
+    } catch (error) {
+      console.error("Manifest aset kritis loading screen tidak tersedia:", error);
+      finishAssets();
+      return;
+    }
+
+    if (criticalAssets.length === 0) {
+      updateProgress();
+      finishAssets();
+      return;
+    }
+    Promise.all(criticalAssets.map(preloadCriticalAsset)).then(() => {
+      updateProgress();
+      finishAssets();
+    }).catch((error) => {
+      console.error("Gagal menyiapkan aset kritis undangan:", error);
+      finishAssets();
+    });
+  };
+
+  startCriticalPreload();
 
   const loadScript = (src) =>
     new Promise((resolve, reject) => {
@@ -509,7 +399,7 @@
 
   let introAnimation;
   let splitWords = [];
-  const introReady = loadScript(gsapUrl)
+  loadScript(gsapUrl)
     .then(() => {
       if (!window.gsap) {
         throw new Error("GSAP tidak tersedia setelah script selesai dimuat");
@@ -520,93 +410,82 @@
       if (!window.gsap || !window.SplitText) {
         throw new Error("Plugin GSAP SplitText tidak tersedia setelah script selesai dimuat");
       }
+      if (!loader.isConnected) {
+        return;
+      }
       window.gsap.registerPlugin(window.SplitText);
 
       const words = loader.querySelectorAll(".kopu-loading-screen__word span");
-      return new Promise((resolve) => {
-        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reducedMotion) {
-          loader.classList.remove("kopu-loading-screen--fallback");
-          window.gsap.set(words, { yPercent: 0, autoAlpha: 1 });
-          resolve();
-          return;
-        }
-
-        // SplitText lets GSAP stagger each character while preserving the phrase order.
-        splitWords = [...words].map((word) =>
-          window.SplitText.create(word, { type: "chars", charsClass: "kopu-loading-screen__char" }),
-        );
-        const characters = splitWords.map((split) => split.chars);
-        window.gsap.set(characters.flat(), { yPercent: 115, autoAlpha: 0 });
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reducedMotion) {
         loader.classList.remove("kopu-loading-screen--fallback");
-        let firstCycleComplete = false;
-        introAnimation = window.gsap.timeline({
-          repeat: -1,
-          onRepeat: () => {
-            if (!firstCycleComplete) {
-              firstCycleComplete = true;
-              resolve();
-            }
-          },
-        });
-        introAnimation
-          .to(characters[0], {
-            yPercent: 0,
-            autoAlpha: 1,
-            duration: 0.8,
-            stagger: 0.09,
-            ease: "power3.out",
-          })
-          .to(characters[1], {
-            yPercent: 0,
-            autoAlpha: 1,
-            duration: 0.8,
-            stagger: 0.09,
-            ease: "power3.out",
-          })
-          .to({}, { duration: 1.1 })
-          .to(characters.flat(), {
-            yPercent: 0,
-            autoAlpha: 0,
-            duration: 0.5,
-            ease: "power2.in",
-          })
-          // Reset below the baseline only after fading out, so characters never exit upward.
-          .set(characters.flat(), { yPercent: 115 });
-      });
+        window.gsap.set(words, { yPercent: 0, autoAlpha: 1 });
+        return;
+      }
+
+      // SplitText lets GSAP stagger each character while preserving the phrase order.
+      splitWords = [...words].map((word) =>
+        window.SplitText.create(word, { type: "chars", charsClass: "kopu-loading-screen__char" }),
+      );
+      const characters = splitWords.map((split) => split.chars);
+      window.gsap.set(characters.flat(), { yPercent: 115, autoAlpha: 0 });
+      loader.classList.remove("kopu-loading-screen--fallback");
+      introAnimation = window.gsap.timeline({ repeat: -1 });
+      introAnimation
+        .to(characters[0], {
+          yPercent: 0,
+          autoAlpha: 1,
+          duration: 0.8,
+          stagger: 0.09,
+          ease: "power3.out",
+        })
+        .to(characters[1], {
+          yPercent: 0,
+          autoAlpha: 1,
+          duration: 0.8,
+          stagger: 0.09,
+          ease: "power3.out",
+        })
+        .to({}, { duration: 1.1 })
+        .to(characters.flat(), {
+          yPercent: 0,
+          autoAlpha: 0,
+          duration: 0.5,
+          ease: "power2.in",
+        })
+        // Reset below the baseline only after fading out, so characters never exit upward.
+        .set(characters.flat(), { yPercent: 115 });
     })
     .catch((error) => {
       console.error("Animasi GSAP loading screen tidak tersedia:", error);
-      return new Promise((resolve) => window.setTimeout(resolve, 1200));
     });
 
-  const fontReady = loadFont().catch((error) => {
+  loadFont().catch((error) => {
     console.error("Font Great Vibes loading screen tidak tersedia:", error);
   });
 
-  Promise.all([assetsReady, fontReady, introReady]).then(() => {
-    observer.disconnect();
-    if (introAnimation) {
-      introAnimation.kill();
-    }
-    // Restore the original text before removing the loader.
-    splitWords.forEach((split) => split.revert());
-
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    loader.classList.add("kopu-loading-screen--leaving");
-    window.setTimeout(() => {
+  assetsReady.then(() => {
+    const removeLoader = () => {
+      if (introAnimation) {
+        introAnimation.kill();
+      }
+      splitWords.forEach((split) => split.revert());
       loader.remove();
       style.remove();
-      loaderActive = false;
-      document.removeEventListener("wheel", preventPageScroll, true);
-      document.removeEventListener("touchmove", preventPageScroll, true);
-      document.removeEventListener("keydown", preventScrollKeys, true);
-      window.removeEventListener("scroll", keepPageAtStart);
-      window.scrollTo(0, 0);
-      window.requestAnimationFrame(() => {
-        window.dispatchEvent(new Event("scroll"));
-        window.dispatchEvent(new Event("resize"));
-      });
-    }, reducedMotion ? 0 : 700);
+    };
+    const onLoaderTransitionEnd = (event) => {
+      if (event.target === loader && event.propertyName === "opacity") {
+        loader.removeEventListener("transitionend", onLoaderTransitionEnd);
+        removeLoader();
+      }
+    };
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reducedMotion) {
+      removeLoader();
+      return;
+    }
+
+    loader.addEventListener("transitionend", onLoaderTransitionEnd);
+    loader.classList.add("kopu-loading-screen--leaving");
   });
 })();
