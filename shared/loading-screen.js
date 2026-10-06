@@ -14,7 +14,7 @@
       position: fixed;
       inset: 0;
       z-index: 2147483647;
-      pointer-events: none;
+      pointer-events: auto;
       display: grid;
       place-items: center;
       padding: 24px;
@@ -187,6 +187,29 @@
   `;
 
   document.body.prepend(loader);
+  let loaderActive = true;
+
+  const preventPageScroll = (event) => {
+    if (loaderActive) {
+      event.preventDefault();
+    }
+  };
+  const preventScrollKeys = (event) => {
+    if (loaderActive && ["ArrowDown", "ArrowUp", "End", "Home", "PageDown", "PageUp", " "].includes(event.key)) {
+      event.preventDefault();
+    }
+  };
+  const keepPageAtStart = () => {
+    if (loaderActive && window.scrollY !== 0) {
+      window.scrollTo(0, 0);
+    }
+  };
+
+  document.addEventListener("wheel", preventPageScroll, { capture: true, passive: false });
+  document.addEventListener("touchmove", preventPageScroll, { capture: true, passive: false });
+  document.addEventListener("keydown", preventScrollKeys, true);
+  window.addEventListener("scroll", keepPageAtStart, { passive: true });
+  keepPageAtStart();
 
   const themeStyles = getComputedStyle(document.documentElement);
   const themeValue = (...names) => {
@@ -574,7 +597,14 @@
     window.setTimeout(() => {
       loader.remove();
       style.remove();
+      loaderActive = false;
+      document.removeEventListener("wheel", preventPageScroll, true);
+      document.removeEventListener("touchmove", preventPageScroll, true);
+      document.removeEventListener("keydown", preventScrollKeys, true);
+      window.removeEventListener("scroll", keepPageAtStart);
+      window.scrollTo(0, 0);
       window.requestAnimationFrame(() => {
+        window.dispatchEvent(new Event("scroll"));
         window.dispatchEvent(new Event("resize"));
       });
     }, reducedMotion ? 0 : 700);
